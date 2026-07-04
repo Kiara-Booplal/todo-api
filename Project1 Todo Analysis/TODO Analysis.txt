@@ -1,0 +1,92 @@
+TODO Analysis
+1. What am I building?
+  - I am trying to create a simple TODO application that allows a person to track items that they need to complete
+    1. Create a new TODO item
+    2. Get a list of all items in that exist
+    3. Get a specific item from the list using the id
+    4. Update a specific based on progress using the id
+    5. Delete specific items using the id
+
+2. The Data
+  1. TODO model
+    - id Int
+    - title String
+    - description String
+    - createdAt Date/Time
+    - status Enum of Status types(Todo, In progress, Completed all which will be string types)this should be created with the default TODO status and there after can be updated
+
+      - id, createAt will be system provided
+      - title, description, state will be user provided
+
+ 2. The request model
+    - title String
+    - description String
+    - status Enum of string (why I say let the user enter this, they might have already started the task and want to organise the tasks they have to keep track)
+
+ 3. The response model
+    - id Int
+    - title String
+    - description String
+    - createAt Date/time
+    - completedAt Date/Time (I added this so that when the status is updated to completed/done they can track how long it took from the day the task was created and if it not completed it will be empty)
+    - status Enum
+
+  4. UpdateRequest model
+    - title String
+    - description String
+    - status String
+
+3. The Endpoints
+   1. create
+    - POST method
+    - v1/todo/items
+    - request body will be the request model
+    - response body will be the response model
+    - the status code on success will be a 201
+
+   2. get list 
+    - Get 
+    - v1/todo/items
+    - response will be a list of the response model
+    - status code will be a 200
+
+   3. get specific item
+    - Get
+    - v1/todo/items/{id}
+    - response model with the specific item 
+    - status code will be a 200
+
+   4. update specific item status
+    - Patch
+    - v1/todo/items/{id}
+    - the body will be the which ever of the 3 title, description, status that they want to update, or any combination of them
+    - response model will be returned for the specified id
+    - status code will be a 200
+    
+
+   5. delete specified entry
+    - Delete 
+    - v1/todo/items/{id}
+    - status code 204
+
+  - for the request that take a request body, if data is missing return a 400
+  - if the wrong url is used return a 404
+  - if the id is missing return 400
+  - if an id is used that does not exist return a 404
+  - return a 400 if user tries to update with a status not in the Enum 
+
+4. The layers
+   - There are 3 layers that will within this application, and it starts from the controller calling the services to execute the business logic, the service then calls the repo to execute which ever function for which ever endpoint was hit
+    1. The controller
+      - Receives the request
+      - Pass the data to the service
+      - Returns the response  
+
+    2. The Service
+      - Contains the business logic
+      - Coordinates between things
+      - Call the repository 
+
+    3. The repository 
+      - Talks to the database only
+    
