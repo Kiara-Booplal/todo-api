@@ -20,10 +20,10 @@ data class Todo(
     val id: Long,
 
     @field:Schema(description = "The title of the item that needs to be done")
-    val title: String,
+    var title: String,
 
     @field:Schema(description = "The description of the item that needs to be done")
-    val description: String,
+    var description: String,
 
     @CreationTimestamp
     @field:Schema(description = "The date the item was created")
@@ -31,8 +31,8 @@ data class Todo(
 
     @UpdateTimestamp
     @field:Schema(description = "The date the item was modified")
-    val updatedAt: LocalDateTime? = null,// for now at any field change we will update, later we will get it to change only when the status is DONE
+    var updatedAt: LocalDateTime? = null,// for now at any field change we will update, later we will get it to change only when the status is DONE
 
     @field:Schema(description = "The current status of the item")
-    val status: Status = Status.TODO
+    var status: Status = Status.TODO
 )

@@ -4,6 +4,7 @@ package com.skills.todo.contoller
 import com.skills.todo.dto.TodoRequest
 import com.skills.todo.dto.TodoResponse
 import com.skills.todo.dto.UpdateRequest
+import com.skills.todo.service.TodoService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -17,13 +18,12 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/v1/todo/items")
-class TodoController {
+class TodoController(private val todoService: TodoService) {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     fun createTodo(@RequestBody request: TodoRequest): TodoResponse {
-
-        return TODO("Provide the return value")
+        return todoService.createTodo(request)
     }
 
     @GetMapping()
