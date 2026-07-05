@@ -97,6 +97,13 @@
 			<groupId>com.fasterxml.jackson.module</groupId>
 			<artifactId>jackson-module-kotlin</artifactId>
 		</dependency>
+		<!-- Source: https://mvnrepository.com/artifact/org.mapstruct/mapstruct -->
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>1.6.3</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -113,74 +120,100 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.jetbrains.kotlin</groupId>
 				<artifactId>kotlin-maven-plugin</artifactId>
 				<version>${kotlin.version}</version>
-				<extensions>true</extensions>
+				<configuration>
+					<!-- Matches your java.version property -->
+					<jvmTarget>${java.version}</jvmTarget>
+					<compilerPlugins>
+						<plugin>spring</plugin>
+					</compilerPlugins>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.jetbrains.kotlin</groupId>
+						<artifactId>kotlin-maven-allopen</artifactId>
+						<version>${kotlin.version}</version>
+					</dependency>
+				</dependencies>
 				<executions>
+					<!-- 1. Run Kapt to generate MapStruct implementations from Kotlin code -->
+					<execution>
+						<id>kapt</id>
+						<goals>
+							<goal>kapt</goal>
+						</goals>
+						<configuration>
+							<sourceDirs>
+								<sourceDir>src/main/kotlin</sourceDir>
+								<sourceDir>src/main/java</sourceDir>
+							</sourceDirs>
+							<annotationProcessorPaths>
+								<annotationProcessorPath>
+									<groupId>org.mapstruct</groupId>
+									<artifactId>mapstruct-processor</artifactId>
+									<version>1.6.3</version>
+								</annotationProcessorPath>
+							</annotationProcessorPaths>
+						</configuration>
+					</execution>
+					<!-- 2. Compile Kotlin code -->
 					<execution>
 						<id>compile</id>
-						<phase>process-sources</phase>
 						<goals>
 							<goal>compile</goal>
 						</goals>
+						<configuration>
+							<sourceDirs>
+								<sourceDir>src/main/kotlin</sourceDir>
+								<sourceDir>src/main/java</sourceDir>
+							</sourceDirs>
+						</configuration>
 					</execution>
+					<!-- 3. Compile Test Kotlin code -->
 					<execution>
 						<id>test-compile</id>
-						<phase>test-compile</phase>
 						<goals>
 							<goal>test-compile</goal>
 						</goals>
+						<configuration>
+							<sourceDirs>
+								<sourceDir>src/test/kotlin</sourceDir>
+								<sourceDir>src/test/java</sourceDir>
+							</sourceDirs>
+						</configuration>
 					</execution>
 				</executions>
-				<configuration>
-					<jvmTarget>1.8</jvmTarget>
-				</configuration>
 			</plugin>
+
+			<!-- Standard compiler plugin config for mixed Kotlin/Java projects -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<release>${java.version}</release>
+				</configuration>
 				<executions>
 					<execution>
 						<id>default-compile</id>
-						<phase>compile</phase>
-						<goals>
-							<goal>compile</goal>
-						</goals>
-						<configuration>
-							<annotationProcessorPaths>
-								<path>
-									<groupId>org.projectlombok</groupId>
-									<artifactId>lombok</artifactId>
-								</path>
-							</annotationProcessorPaths>
-						</configuration>
+						<phase>none</phase>
 					</execution>
 					<execution>
 						<id>default-testCompile</id>
-						<phase>test-compile</phase>
-						<goals>
-							<goal>testCompile</goal>
-						</goals>
-						<configuration>
-							<annotationProcessorPaths>
-								<path>
-									<groupId>org.projectlombok</groupId>
-									<artifactId>lombok</artifactId>
-								</path>
-							</annotationProcessorPaths>
-						</configuration>
+						<phase>none</phase>
 					</execution>
 					<execution>
-						<id>compile</id>
+						<id>java-compile</id>
 						<phase>compile</phase>
 						<goals>
 							<goal>compile</goal>
 						</goals>
 					</execution>
 					<execution>
-						<id>testCompile</id>
+						<id>java-test-compile</id>
 						<phase>test-compile</phase>
 						<goals>
 							<goal>testCompile</goal>
@@ -190,5 +223,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

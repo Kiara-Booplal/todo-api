@@ -13,7 +13,4 @@ data class TodoRequest(
     @field:Schema(description = "The description of the item that needs to be done")
     val description: String,
 
-    @NotNull
-    @field:Schema(description = "The default status ")
-    val status: Status
 )
