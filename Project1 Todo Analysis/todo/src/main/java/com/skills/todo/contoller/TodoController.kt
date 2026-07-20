@@ -5,6 +5,7 @@ import com.skills.todo.dto.TodoRequest
 import com.skills.todo.dto.TodoResponse
 import com.skills.todo.dto.UpdateRequest
 import com.skills.todo.service.TodoService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -22,13 +23,13 @@ class TodoController(private val todoService: TodoService) {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    fun createTodo(@RequestBody request: TodoRequest): TodoResponse {
+    fun createTodo(@Valid @RequestBody request: TodoRequest): TodoResponse {
         return todoService.createTodo(request)
     }
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    fun getTodos(): List<TodoResponse>{
+    fun getTodos(): List<TodoResponse> {
 
         return TODO("Provide the return value")
     }
@@ -40,12 +41,12 @@ class TodoController(private val todoService: TodoService) {
         return TODO("Provide the return value")
     }
 
-   @PatchMapping("/{id}")
-   @ResponseStatus(HttpStatus.OK)
-   fun updateTodo(@PathVariable id: Long, @RequestBody request: UpdateRequest): TodoResponse {
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    fun updateTodo(@PathVariable id: Long, @Valid @RequestBody request: UpdateRequest): TodoResponse {
 
-       return TODO("Provide the return value")
-   }
+        return TODO("Provide the return value")
+    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
