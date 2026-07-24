@@ -16,4 +16,9 @@ class TodoService(
         todoRepo.save(entity)
         return todoMapper.modelToResponse(entity)
     }
+
+    fun displayAllTodos(): List<TodoResponse>{
+        val entity = emptyList<TodoResponse>()
+        return todoRepo.findAll().map { todoMapper.modelToResponse(it) }
+    }
 }

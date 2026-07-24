@@ -19,9 +19,20 @@ class GlobalExceptionHandler {
         val body = ErrorMessage(
             code = errorCode,
             httpStatus = errorHttpStatus,
-            message = errorMessage
+            message = errorMessage.joinToString(", ")
         )
         return ResponseEntity.badRequest()
+            .body(body)
+    }
+
+    @ExceptionHandler(value = [Exception::class])
+    fun handleException(ex: Exception): ResponseEntity<ErrorMessage> {
+        val body = ErrorMessage(
+            code = HttpStatus.INTERNAL_SERVER_ERROR.value(),
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR.name,
+            message ="An unexpected error  has occured while processing the request"
+        )
+        return ResponseEntity.internalServerError()
             .body(body)
     }
 }
