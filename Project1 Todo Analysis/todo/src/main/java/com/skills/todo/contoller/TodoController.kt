@@ -30,8 +30,7 @@ class TodoController(private val todoService: TodoService) {
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     fun getTodos(): List<TodoResponse> {
-
-        return TODO("Provide the return value")
+        return todoService.displayAllTodos()
     }
 
     @GetMapping("/{id}")
