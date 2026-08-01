@@ -36,8 +36,7 @@ class TodoController(private val todoService: TodoService) {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getTodo(@PathVariable id: Long): TodoResponse {
-
-        return TODO("Provide the return value")
+        return todoService.displaySpecifiedTodo(id)
     }
 
     @PatchMapping("/{id}")
