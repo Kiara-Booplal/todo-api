@@ -2,11 +2,14 @@ package com.skills.todo.mapper
 
 import com.skills.todo.dto.TodoRequest
 import com.skills.todo.dto.TodoResponse
+import com.skills.todo.dto.UpdateRequest
 import com.skills.todo.model.Todo
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
+import org.mapstruct.MappingTarget
+import org.mapstruct.NullValuePropertyMappingStrategy
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",  nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE )
 interface TodoMapper {
 
     @Mapping( target = "id", ignore = true)
@@ -16,4 +19,6 @@ interface TodoMapper {
     fun requestToModel(request: TodoRequest): Todo
 
     fun modelToResponse(todo: Todo): TodoResponse
+
+    fun updateRequestToModel(updateRequest: UpdateRequest,  @MappingTarget todo: Todo): Todo
 }

@@ -2,6 +2,7 @@ package com.skills.todo.service
 
 import com.skills.todo.dto.TodoRequest
 import com.skills.todo.dto.TodoResponse
+import com.skills.todo.dto.UpdateRequest
 import com.skills.todo.exception.TodoException
 import com.skills.todo.mapper.TodoMapper
 import com.skills.todo.repository.TodoRepo
@@ -27,5 +28,18 @@ class TodoService(
     fun displaySpecifiedTodo(id : Long): TodoResponse {
         val todo = todoRepo.findByIdOrNull(id) ?: throw TodoException(id)
         return todoMapper.modelToResponse(todo)
+    }
+
+    fun updateTodo(id: Long, request: UpdateRequest): TodoResponse {
+       val todo = todoRepo.findByIdOrNull(id) ?: throw TodoException(id)
+        val entity = todoMapper.updateRequestToModel(request, todo)
+        todoRepo.save(entity)
+        return todoMapper.modelToResponse(entity)
+    }
+
+    fun deleteTodo(id: Long) {
+        todoRepo.findByIdOrNull(id) ?: throw TodoException(id)
+        return todoRepo.deleteById(id)
+
     }
 }

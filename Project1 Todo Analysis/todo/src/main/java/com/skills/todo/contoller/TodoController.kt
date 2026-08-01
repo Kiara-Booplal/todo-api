@@ -43,13 +43,14 @@ class TodoController(private val todoService: TodoService) {
     @ResponseStatus(HttpStatus.OK)
     fun updateTodo(@PathVariable id: Long, @Valid @RequestBody request: UpdateRequest): TodoResponse {
 
-        return TODO("Provide the return value")
+        return todoService.updateTodo(id, request)
+
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteTodo(@PathVariable id: Long) {
 
-        return TODO("Provide the return value")
+        return todoService.deleteTodo(id)
     }
 }
