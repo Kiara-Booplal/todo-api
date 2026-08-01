@@ -35,4 +35,13 @@ class GlobalExceptionHandler {
         return ResponseEntity.internalServerError()
             .body(body)
     }
+    @ExceptionHandler(value = [TodoException::class])
+    fun handleResopurceNotFoundException(ex: TodoException): ResponseEntity<ErrorMessage> {
+        val body = ErrorMessage(
+            code = HttpStatus.NOT_FOUND.value(),
+            httpStatus = HttpStatus.NOT_FOUND.name,
+            message = ex.message
+        )
+        return ResponseEntity(body, HttpStatus.NOT_FOUND)
+    }
 }
